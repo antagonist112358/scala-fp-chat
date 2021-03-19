@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fpchat-server
+  labels:
+    app: fpchat-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fpchat-server
+  template:
+    metadata:
+      labels:
+        app: fpchat-server
+    spec:
+      containers:
+        - name: fpchat-server
+          imagePullPolicy: Always
+          image: autoscheduler.azurecr.io/demonstration/fpchat-server:latest
+          env:
+          ports:
+            - containerPort: 25989
+      imagePullSecrets:
+        - name: as-acr-auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fpchat-server-frontend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 25989
+      targetPort: 25989
+      name: fpchat-server-port
+
+  selector:
+    app: fpchat-server

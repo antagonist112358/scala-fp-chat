@@ -31,6 +31,7 @@ lazy val moduleSettings = Seq(
       "-unchecked",
       "-Ywarn-dead-code"
   ),
+  scalacOptions in (Compile, doc) ++= Seq("-groups", "-implicits", "-no-link-warnings"),
   scalacOptions in Test ++= List("-Yrangepos"),
   organization := "net.mentalarray.chat",
   scalaVersion := "2.13.4",
@@ -49,10 +50,11 @@ lazy val `fpchat-server` = (project in file("modules/fpchat-server"))
   .dependsOn(`fpchat-api`)
   .settings(moduleSettings)
   .settings(compilerPlugins)
+  .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
 lazy val `fpchat-client` = (project in file("modules/fpchat-client"))
   .settings(moduleSettings)
   .dependsOn(`fpchat-api`)
-  .settings(
-    libraryDependencies ++= clientDependencies)
+  .settings(libraryDependencies ++= clientDependencies)
   .settings(compilerPlugins)
+  .enablePlugins(JavaAppPackaging, UniversalPlugin)

@@ -31,7 +31,7 @@ object RichText {
     * {{{
     *   val color = "blue"
     *   val greet = "Hello"
-    *   val richText = r"[b][fg:$color]$greet[/b], World!"
+    *   val richText = r"[b][fg:color]greet[/b], World!"
     * }}}
     *
     * @note Format Options:

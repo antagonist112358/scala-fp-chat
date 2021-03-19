@@ -41,6 +41,11 @@ object Client extends IOApp {
         Blocker[IO].use { blocker =>
           start[IO](blocker)
             .runA(address)
+            .handleErrorWith {
+              case _: java.io.IOException                    => Stream.empty
+              case _: java.nio.channels.ReadPendingException => Stream.empty
+              case otherError                                => Stream.raiseError[IO](otherError)
+            }
             .compile
             .drain
             .as(ExitCode.Success)
